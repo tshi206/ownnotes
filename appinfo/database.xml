@@ -1,0 +1,47 @@
+<database>
+	<!-- <name> can be replaced by a global variable : *dbname*, such that the db name will be set to the default schema (i.e., the one you specified during the installation wizard of this owncloud instance).
+	Example:
+	<name>*dbname*</name> -->
+	<name>test</name>
+	<create>true</create>
+	<overwrite>false</overwrite>
+	<charset>utf8</charset>
+	<table>
+		<!-- the table name can also be replaced by a global variable, i.e., the following can be replaced by:
+		<name>*dbprefix*ownnotes_notes</name>
+		If the *dbprefix* is used, the resulting table name will be, for this example, oc_ownnotes_notes. oc_ is the default prefix for owncloud tables.
+		Here, however, we specify our custom prefix 'ts_' -->
+		<name>ts_ownnotes_notes</name>
+		<declaration>
+			<field>
+				<name>id</name>
+				<type>integer</type>
+				<notnull>true</notnull>
+				<autoincrement>true</autoincrement>
+				<unsigned>true</unsigned>
+				<primary>true</primary>
+				<length>8</length>
+			</field>
+			<field>
+				<name>title</name>
+				<type>text</type>
+				<length>200</length>
+				<default></default>
+				<notnull>true</notnull>
+			</field>
+			<field>
+				<name>user_id</name>
+				<type>text</type>
+				<length>200</length>
+				<default></default>
+				<notnull>true</notnull>
+			</field>
+			<field>
+				<name>content</name>
+				<type>clob</type>
+				<default></default>
+				<notnull>true</notnull>
+			</field>
+		</declaration>
+	</table>
+</database>
