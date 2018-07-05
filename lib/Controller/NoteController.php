@@ -10,6 +10,7 @@ namespace OCA\OwnNotes\Controller;
 
 use Exception;
 
+use OCP\ILogger;
 use OCP\IRequest;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
@@ -41,6 +42,9 @@ class NoteController extends Controller {
 	private $service; // replace the old $mapper instance because we are using our custom $service::NoteService as a higher abstraction over the $mapper::NoteMapper
 	private $userId;
 
+	private $logger;
+	public $appName;
+
 	use Errors;
 
 	/**
@@ -54,15 +58,22 @@ class NoteController extends Controller {
 	 *
 	 * * Note2: Hence, we replace the old NoteMapper parameter for the constructor with a NoteService type-hinted parameter. Again, owncloud will look up for the desired class according to the namespaces we provide in 'use' statements and assemble them by itself.
 	 *
+	 * @param ILogger $logger
 	 * @param string $appName
 	 * @param IRequest $request
 	 * @param NoteService $service it replaces the old NoteMapper $mapper
-	 * @param $UserId
+	 * @param $UserId :this is a predefined param name (*UserId*, case-sensitive) when using owncloud will fill in this param with the id of the current user automatically
 	 */
-	public function __construct(string $appName, IRequest $request, NoteService $service, $UserId) {
+	public function __construct(ILogger $logger, string $appName, IRequest $request, NoteService $service, $UserId) {
 		parent::__construct($appName, $request);
 		$this->service = $service;
 		$this->userId = $UserId;
+		$this->logger = $logger;
+		$this->appName = $appName;
+	}
+
+	public function log($message) {
+		$this->logger->error($message, ['app' => $this->appName]);
 	}
 
 	/**
@@ -115,7 +126,8 @@ class NoteController extends Controller {
 //		$note->setTitle($title);
 //		$note->setContent($content);
 //		$note->setUserId($this->userId);
-
+		$this->log("DEBUGGING IN NoteController->create");
+		$this->log("title => $title, content => $content, userId => $this->userId");
 		return new DataResponse($this->service->create($title, $content, $this->userId));
 	}
 

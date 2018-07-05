@@ -11,6 +11,7 @@ namespace OCA\OwnNotes\Service;
 use Exception;
 use OCP\AppFramework\Db\{DoesNotExistException, MultipleObjectsReturnedException};
 use OCA\OwnNotes\Db\{Note, NoteMapper};
+use OCP\ILogger;
 
 
 /**
@@ -29,9 +30,21 @@ This is bad, because a controller’s only responsibility should be to deal with
 class NoteService {
 
 	private $mapper;
+	private $logger;
+	private $appName;
 
-	public function __construct(NoteMapper $mapper) {
+
+	public function __construct(ILogger $logger, $appName, NoteMapper $mapper = null) {
 		$this->mapper = $mapper;
+		$this->logger = $logger;
+		$this->appName = $appName;
+	}
+
+	/**
+	 * @param $message
+	 */
+	public function log($message) {
+		$this->logger->debug($message, ['app' => $this->appName]);
 	}
 
 	/**
@@ -81,11 +94,19 @@ class NoteService {
 	 * @return \OCP\AppFramework\Db\Entity
 	 */
 	public function create ($title, $content, $userId) {
+		$this->log("DEBUGGING IN NoteService->create");
+		$this->log("title => $title, content => $content, userId => $userId");
 		$note = new Note();
-		$note->setTitle($title);
-		$note->setContent($content);
-		$note->setUserId($userId);
-		return $this->mapper->insert($note);
+		$note->title = $title;
+		$note->content = $content;
+		$note->userId = $userId;
+		$this->log("NoteService : GOING TO CREATE A NOTE ENTITY");
+		$this->log("NEW NOTE ENTITY : {
+			title => $note->title;
+			content => $note->content;
+			userId =>$note->userId;
+		}");
+		return $this->mapper->create($note);
 	}
 
 	/**
@@ -98,15 +119,21 @@ class NoteService {
 	 */
 	public function update ($id, $title, $content, $userId) {
 		try {
+			$this->log("DEBUGGING IN NoteService->update");
+			$this->log("id : " . $id . " ; title : " . $title . " ; content : " . $content . " ; userId : " . $userId);
+			$this->log("GOING TO FETCH NOTE FROM DB!!!!!");
+			$this->log($this->mapper ? "mapper defined" : "MAPPER UNDEFINED!!!!!!!!!!!!");
 			$note = $this->mapper->find($id, $userId);
+			$this->log("TEST IM HERE!!!!!");
 			/** @var Note $note
 			 *
 			 * PHP is weakly typed, not casting required. In this case we know from class hierarchy that our custom Note provides setters whereas its super class Entity does not. Hence, we just suppress the IDE warning here.
 			 *
 			 */
-			$note->setTitle($title);
-			$note->setContent($content);
-			return $this->mapper->update($note);
+			$this->log($note);
+			$note->title = $title;
+			$note->content = $content;
+			return $this->mapper->renew($note);
 		} catch (Exception $e) {
 			$this->handleException($e);
 			return null;
@@ -122,7 +149,7 @@ class NoteService {
 	public function delete ($id, $userId) {
 		try {
 			$note = $this->mapper->find($id, $userId);
-			$this->mapper->delete($note);
+			$this->mapper->remove($note);
 			return $note;
 		} catch (Exception $e) {
 			$this->handleException($e);

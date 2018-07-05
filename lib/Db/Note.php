@@ -22,9 +22,10 @@ use OCP\AppFramework\Db\Entity;
  */
 class Note extends Entity implements JsonSerializable {
 
-	protected $title;
-	protected $content;
-	protected $userId;
+	public $title;
+	public $content;
+	public $userId;
+	public $dateTime;
 
 	public function jsonSerialize() {
 		return [
@@ -34,76 +35,13 @@ class Note extends Entity implements JsonSerializable {
 		];
 	}
 
-	/**
-	 * @return mixed
-	 */
-	public function getTitle() {
-		return $this->title;
-	}
-
-	/**
-	 * @param mixed $title
-	 */
-	public function setTitle($title): void {
-		$this->title = $title;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getContent() {
-		return $this->content;
-	}
-
-	/**
-	 * @param mixed $content
-	 */
-	public function setContent($content): void {
-		$this->content = $content;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getUserId() {
-		return $this->userId;
-	}
-
-	/**
-	 * @param mixed $userId
-	 */
-	public function setUserId($userId): void {
-		$this->userId = $userId;
-	}
-
-	/**
-	 * __get, __set, __call and __callStatic are invoked when the method or property is inaccessible.
-	 *
-	 * @param $name
-	 * @param $value
-	 */
-	public function __set($name, $value) {
-		try {
-			switch ($name) {
-				case 'title' :
-					$this->title = $value;
-					break;
-				case 'content' :
-					$this->content = $value;
-					break;
-				case 'userId' :
-					$this->userId = $value;
-					break;
-				default :
-					throw new \Exception("specified field name not found in".$this);
-			}
-		} catch (\Exception $e) {
-			echo $e;
-		}
-	}
-
 	public function __toString() {
-		return 'OCA\OwnNotes\Db\Note';
+		return 'OCA\OwnNotes\Db\Note' . "{
+			'id' => $this->id,
+			'title' => $this->title,
+			'content' => $this->content,
+			'userId' => $this->userId
+		}";
 	}
 
 }

@@ -10,8 +10,9 @@
 		<!-- the table name can also be replaced by a global variable, i.e., the following can be replaced by:
 		<name>*dbprefix*ownnotes_notes</name>
 		If the *dbprefix* is used, the resulting table name will be, for this example, oc_ownnotes_notes. oc_ is the default prefix for owncloud tables.
-		Here, however, we specify our custom prefix 'ts_' -->
-		<name>ts_ownnotes_notes</name>
+		Here, however, we specify our custom prefix 'ts_'.
+		 IMPORTANT UPDATE: owncloud DOES NOT allow table names without the predefined 'oc_' prefix. I give up. Whatever. Just use the imposed 'oc_' prefix then. Fair enough. Although it is not necessary to use a custom table name with custom prefix here, this is still a good experiment... -->
+		<name>*dbprefix*ts_ownnotes_notes</name>
 		<declaration>
 			<field>
 				<name>id</name>
@@ -38,9 +39,14 @@
 			</field>
 			<field>
 				<name>content</name>
-				<type>clob</type>
+				<type>text</type>
+				<length>1000</length>
 				<default></default>
 				<notnull>true</notnull>
+			</field>
+			<field>
+				<name>date_time</name>
+				<type>datetime</type>
 			</field>
 		</declaration>
 	</table>

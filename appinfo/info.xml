@@ -5,7 +5,7 @@
     <description>My first ownCloud App</description>
     <licence>AGPL</licence>
     <author>Mason Shi</author>
-    <version>1.0.1</version>
+    <version>1.6.3</version>
     <!-- Pay careful attention to the namespace element. This element defines the application’s relative namespace.
      This namespace, in turn, sits inside a parent ownCloud namespace, called OCA.
       As the application’s namespace is OwnNotes, then it’s fully-qualified namespace is OCA\\OwnNotes. -->
