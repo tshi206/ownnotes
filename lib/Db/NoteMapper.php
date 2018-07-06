@@ -133,8 +133,8 @@ class NoteMapper extends Mapper {
 			  user_id = ? AND 
 			  date_time = ?';
 		$result = $this->execute($sql, [$id, $title, $content, $userId, $dateTime]);
-		if ($result->fetch() === false) {
-			$this->log("DEBUGGING IN NoteMapper->remove : fail to delete specified Note!!!!!!");
+		if ($result->rowCount() !== 1) {
+			$this->log("DEBUGGING IN NoteMapper->remove : fail to delete the specified Note!!!!!!");
 			return null;
 		}
 
