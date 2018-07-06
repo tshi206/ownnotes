@@ -40,7 +40,9 @@
 				console.log("DEBUGGING IN script->Notes->load : attempt to load note id : " + id);
 				let self = this;
 				this._notes.forEach(function (note) {
-					if (note.id === id) {
+					console.log("DEBUGGING IN script->Notes->load : looping through note id : " + note.id);
+					if (note.id+'' === id+'') { // manual cast to string to force string comparison
+						console.log("DEBUGGING IN script->Notes->load : find matching note id : " + note.id);
 						note.active = true;
 						self._activeNote = note;
 					} else {
@@ -63,7 +65,7 @@
 				let deferred = $.Deferred();
 				let id = this._activeNote.id;
 				this._notes.forEach(function (note, counter) {
-					if (note.id === id) {
+					if (note.id+'' === id+'') { // manual cast to string to force string comparison
 						index = counter;
 					}
 				});
@@ -169,9 +171,14 @@
 				let source = $('#content-tpl').html();
 				let template = Handlebars.compile(source);
 
-				console.log("DEBUGGING IN script->View->renderContent : get active node id : " + this._notes.getActive().id);
-				console.log("DEBUGGING IN script->View->renderContent : get active node title : " + this._notes.getActive().title);
-				console.log("DEBUGGING IN script->View->renderContent : get active node content : " + this._notes.getActive().content);
+				if (typeof this._notes.getActive() === 'undefined') {
+					console.log("DEBUGGING IN script->View->renderContent : get active node : undefined");
+				} else {
+					console.log("DEBUGGING IN script->View->renderContent : get active node id : " + this._notes.getActive().id);
+					console.log("DEBUGGING IN script->View->renderContent : get active node title : " + this._notes.getActive().title);
+					console.log("DEBUGGING IN script->View->renderContent : get active node content : " + this._notes.getActive().content);
+				}
+
 				let html = template({note: this._notes.getActive()});
 
 				$('#editor').html(html);
