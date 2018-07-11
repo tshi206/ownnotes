@@ -32,3 +32,8 @@
 #editor button {
 	height: 44px;
 }
+
+#map {
+	height: 400px;
+	width: 100%;
+}

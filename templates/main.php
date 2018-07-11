@@ -29,6 +29,13 @@ style('ownnotes', 'style');  // adds ownnotes/css/style.css
 		<div id="app-content-wrapper">
 			<?php print_unescaped($this->inc('part.content')); ?>
 		</div>
+		<h3>My Google Maps Demo</h3>
+		<!--The div element for the map
+		 	Remember to give it a height and width in your style css -->
+    	<div id="map"></div>
+		<script async defer
+    		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA1W9m44Rv3qXbCDJ3PqhUXtRvsdnJ80oM&callback=initMap">
+    	</script>
 	</div>
 
 </div>
@@ -36,4 +43,5 @@ style('ownnotes', 'style');  // adds ownnotes/css/style.css
 <?php
 // place custom js logic at the end
 script('ownnotes', 'script');
+script('ownnotes', 'initMap');
 ?>
